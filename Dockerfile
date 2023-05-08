@@ -1,5 +1,6 @@
 FROM ubuntu:focal AS base
-WORKDIR /usr/local/bin
+ENV HOME /root
+WORKDIR /$HOME
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -17,7 +18,8 @@ RUN adduser --gecos john --uid 1000 --gid 1000 --disabled-password john
 USER john
 WORKDIR /home/john
 
-FROM john
+FROM base
+WORKDIR /$HOME
 COPY . .
 CMD ["sh", "-c", "ansible-playbook $TAGS local.yml"]
 
