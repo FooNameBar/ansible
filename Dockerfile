@@ -1,6 +1,5 @@
 FROM ubuntu:focal AS base
-ENV HOME /root
-WORKDIR /$HOME
+WORKDIR /usr/local/bin
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -19,7 +18,6 @@ USER john
 WORKDIR /home/john
 
 FROM base
-WORKDIR /$HOME
 COPY . .
 CMD ["sh", "-c", "ansible-playbook $TAGS local.yml"]
 
