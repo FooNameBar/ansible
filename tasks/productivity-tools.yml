@@ -1,4 +1,5 @@
 - name: shutter ppa (ppa:linuxuprising/shutter)
+  become: true
   apt_repository:
    repo: ppa:linuxuprising/shutter
    state: present
@@ -8,6 +9,7 @@
     - productivity
 
 - name: Install packages
+  become: true
   apt:
     name: [ "tmux", "xclip", "screenkey", "tldr", "ripgrep", "shutter" ]
   tags:
@@ -20,7 +22,7 @@
   tags:
     - install
     - productivity
-- name: Install fzf
+- name: Run fzf install
   shell: ~/.fzf/install
   tags:
     - install
