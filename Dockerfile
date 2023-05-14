@@ -17,7 +17,7 @@ RUN adduser --gecos john --uid 1000 --gid 1000 --disabled-password john
 USER john
 WORKDIR /home/john
 
-FROM base
-COPY . .
+FROM john
+COPY --chown=john . .
 CMD ["sh", "-c", "ansible-playbook $TAGS local.yml"]
 

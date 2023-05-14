@@ -2,6 +2,7 @@
   vars:
     source_key: "./.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
+    user: "{{ ansible_user_id }}"
   pre_tasks:
   - name: Update Apt
     become: true

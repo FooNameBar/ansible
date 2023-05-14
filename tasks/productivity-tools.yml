@@ -1,5 +1,4 @@
 - name: shutter ppa (ppa:linuxuprising/shutter)
-  become: true
   apt_repository:
    repo: ppa:linuxuprising/shutter
    state: present
@@ -9,9 +8,20 @@
     - productivity
 
 - name: Install packages
-  become: true
   apt:
-    name: [ "tmux", "fzf", "xclip", "screenkey", "tldr", "ripgrep", "shutter" ]
+    name: [ "tmux", "xclip", "screenkey", "tldr", "ripgrep", "shutter" ]
+  tags:
+    - install
+    - productivity
+- name: Clone fzf
+  ansible.builtin.git:
+   repo: 'https://github.com/junegunn/fzf.git'
+   dest: '~/.fzf'
+  tags:
+    - install
+    - productivity
+- name: Install fzf
+  shell: ~/.fzf/install
   tags:
     - install
     - productivity
