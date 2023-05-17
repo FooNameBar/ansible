@@ -27,5 +27,5 @@
   tags: *tags_for_zsh_tasks
 
 - name: Delete .zshrc to make way for .dotfiles symlink later (it's a little hacky)
-  shell: rm ~/.zshrc
+  shell: rm -f ~/.zshrc
   tags: *tags_for_zsh_tasks

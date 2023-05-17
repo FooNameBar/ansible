@@ -1,9 +1,10 @@
-- name: shutter ppa (ppa:linuxuprising/shutter)
+- name: shutter ppa (ppa:linuxuprising/shutter) for older Ubuntu Versions
   become: true
   apt_repository:
    repo: ppa:linuxuprising/shutter
    state: present
    update_cache: True
+  when: not ansible_distribution_release == 'jammy'
   tags:
     - install
     - productivity
