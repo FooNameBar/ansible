@@ -12,7 +12,7 @@
 - name: Install packages
   become: true
   apt:
-    name: [ "tmux", "xclip", "screenkey", "tldr", "ripgrep", "shutter" ]
+    name: [ "tmux", "tldr", "ripgrep" ]
   tags:
     - install
     - productivity

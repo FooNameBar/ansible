@@ -1,0 +1,29 @@
+- name: MPV media player and controller utilities
+  become: true
+  apt:
+    name: ["mpv", "mpv-mpris", "playerctl"]
+  tags:
+    - media
+    - non-essentials
+
+- name: qBittorent
+  become: true
+  apt:
+    name: qbittorrent
+  tags:
+    - media
+    - non-essentials
+
+- name: KeePassXC
+  become: true
+  apt:
+    name: keepassxc
+  tags:
+    - non-essentials
+
+- name: Torguard
+  become: true
+  apt:
+    name: ["torguard", "wireguard"]
+  tags:
+    - non-essentials
