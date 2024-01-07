@@ -1,5 +1,8 @@
 - name: Remove neovim
-  shell: rm -rf ~/neovim
+  become: true
+  file:
+    path: "{{ lookup('env', 'HOME') }}/neovim"
+    state: absent
   tags:
     - install
     - neovim
