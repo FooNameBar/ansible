@@ -19,25 +19,7 @@
 - name: Install System Packages 3 (the rest)
   become: true
   apt:
-    name: [ "curl", "lsof", "golang", "dconf-editor", "nvidia-settings", "pavucontrol", "moreutils", "ubuntu-mate-desktop", "python3" ]
+    name: [ "curl", "lsof", "golang", "dconf-editor", "nvidia-settings", "pavucontrol", "moreutils", "python3" ]
   tags:
     - install
     - core
-
-- name: Download Rust Installer
-  get_url:
-    url: https://sh.rustup.rs
-    dest: /tmp/sh.rustup.rs
-    mode: '0755'
-    force: 'yes'
-  tags:
-    - install
-    - core
-    - rust
-
-- name: install Rust
-  shell: /tmp/sh.rustup.rs -y && source "{{ lookup('env', 'HOME') }}"/.cargo/env"
-  tags:
-    - install
-    - core
-    - rust

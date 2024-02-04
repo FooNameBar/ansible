@@ -1,7 +1,7 @@
 - name: MPV media player and controller utilities
   become: true
   apt:
-    name: ["mpv", "mpv-mpris", "playerctl", "xbindkeys"]
+    name: ["mpv", "mpv-mpris", "playerctl"]
   tags:
     - media
     - non-essentials
