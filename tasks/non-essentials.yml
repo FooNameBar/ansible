@@ -4,7 +4,7 @@
     name: ["mpv", "mpv-mpris", "playerctl"]
   tags:
     - media
-    - non-essentials
+    - nonessentials
 
 - name: qBittorent
   become: true
@@ -12,11 +12,11 @@
     name: qbittorrent
   tags:
     - torrent
-    - non-essentials
+    - nonessentials
 
 - name: KeePassXC
   become: true
   apt:
-    name: ["torguard", "wireguard", "keepassxc"]
+    name: [ "wireguard", "keepassxc"]
   tags:
-    - non-essentials
+    - nonessentials

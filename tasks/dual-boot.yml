@@ -1,6 +1,0 @@
-- name: Use rEFind for dual boot with Windows
-  become: true
-  apt:
-    name: refind
-  tags:
-    - dual
