@@ -24,4 +24,5 @@
     - import_tasks: tasks/dotfiles.yml
     - import_tasks: tasks/productivity-tools.yml
     - import_tasks: tasks/non-essentials.yml
+    - import_tasks: tasks/alacritty.yml
 
