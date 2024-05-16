@@ -26,6 +26,12 @@
     dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
   tags: *tags_for_zsh_tasks
 
+- name: Install zsh-syntax-highlighting
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    dest: "~/.oh-my-zsh/plugins/zsh-syntax-highlighting"
+  tags: *tags_for_zsh_tasks
+
 - name: Delete .zshrc to make way for .dotfiles symlink later (it's a little hacky)
   shell: rm -f ~/.zshrc
   tags: *tags_for_zsh_tasks
