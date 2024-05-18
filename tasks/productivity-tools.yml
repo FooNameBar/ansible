@@ -1,7 +1,7 @@
 - name: Install packages
   become: true
   apt:
-    name: [ "tmux", "tldr", "ripgrep" ]
+    name: [ "tldr", "ripgrep" ]
   tags:
     - install
     - productivity
@@ -19,46 +19,3 @@
   tags:
     - install
     - productivity
-
-- name: Tailwind Binary
-  become: true
-  get_url:
-    url: https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64
-    dest: /usr/local/bin/tailwindcss
-    mode: '0755'
-    force: 'yes'
-  tags:
-    - install
-    - productivity
-    - tailwind
-
-- name: Add Docker GPG apt key
-  become: true
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-  tags:
-    - install
-    - productivity
-    - docker
-
-- name: Add Docker Repository
-  become: true
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu focal stable
-    state: present
-  tags:
-    - install
-    - productivity
-    - docker
-
-- name: Update apt and install docker-ce
-  become: true
-  apt:
-    name: docker-ce
-    state: latest
-    update_cache: true
-  tags:
-    - install
-    - productivity
-    - docker

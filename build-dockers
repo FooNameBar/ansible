@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-docker build . -t new-ubuntu
-docker build . -f nvim.Dockerfile -t nvim-computer
