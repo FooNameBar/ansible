@@ -13,6 +13,6 @@
     - install
 
 - name: Run fzf install
-  shell: ~/.fzf/install
+  shell: ~/.fzf/install && rm {{ lookup('env', 'HOME') }}/.fzf/shell/*.zsh
   tags:
     - install

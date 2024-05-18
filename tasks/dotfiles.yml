@@ -12,7 +12,8 @@
     recursive: yes
     update: yes
     accept_hostkey: yes
-    version: master
+    single_branch: yes
+    version: docker
   tags:
     - install
 
