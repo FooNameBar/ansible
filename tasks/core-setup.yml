@@ -1,12 +1,10 @@
 - name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
   become: true
   apt:
-    name: ["build-essential", "cmake", "pkg-config", "libpthread-stubs0-dev"]
+    name: ["build-essential", "pkg-config", "libpthread-stubs0-dev"]
   tags:
     - install
-    - core
     - nvim
-    - productivity
 
 - name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
   become: true
@@ -14,9 +12,7 @@
     name: [ "lua5.1", "unzip", "libtool", "libtool-bin", "gettext"]
   tags:
     - install
-    - core
     - nvim
-    - productivity
 
 - name: Install System Packages 3 (the rest)
   become: true
@@ -24,5 +20,3 @@
     name: [ "curl", "lsof", "dconf-editor", "nvidia-settings", "pavucontrol", "moreutils", "python3" ]
   tags:
     - install
-    - core
-    - productivity

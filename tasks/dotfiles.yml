@@ -4,8 +4,7 @@
     name: stow
   tags:
     - install
-    - dotfiles
-    - stow
+
 - name: Cloning .dotfiles
   ansible.builtin.git:
     repo: 'git@github.com:FooNameBar/.dotfiles.git'
@@ -16,11 +15,9 @@
     version: master
   tags:
     - install
-    - dotfiles
-    - stow
+
 - name: Stow dotfiles
   shell: cd $HOME/.dotfiles && ./setupVars
   tags:
     - install
-    - dotfiles
-    - stow
+

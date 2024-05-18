@@ -1,22 +1,26 @@
 - name: Install ZSH
   become: true
   apt: name=zsh
-  tags: &tags_for_zsh_tasks [ 'install', 'productivity', 'dotfiles', 'zsh' ]
+  tags:
+    - install
 
 - name: Change shell to zsh
   become: true
   shell: chsh -s $(which zsh) {{ user }}
-  tags: *tags_for_zsh_tasks
+  tags:
+    - install
 
 - name: Check that the somefile.conf exists
   stat:
     path: /home/{{ user }}/.oh-my-zsh
   register: oh_my_stats
-  tags: *tags_for_zsh_tasks
+  tags:
+    - install
 
 - name: Oh-My-Zsh
   shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
-  tags: *tags_for_zsh_tasks
+  tags:
+    - install
   when: oh_my_stats.stat.exists == False
   become_user: john
 
@@ -24,14 +28,17 @@
   ansible.builtin.git:
     repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
     dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
-  tags: *tags_for_zsh_tasks
+  tags:
+    - install
 
 - name: Install zsh-syntax-highlighting
   ansible.builtin.git:
     repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
     dest: "~/.oh-my-zsh/plugins/zsh-syntax-highlighting"
-  tags: *tags_for_zsh_tasks
+  tags:
+    - install
 
 - name: Delete .zshrc to make way for .dotfiles symlink later (it's a little hacky)
   shell: rm -f ~/.zshrc
-  tags: *tags_for_zsh_tasks
+  tags:
+    - install

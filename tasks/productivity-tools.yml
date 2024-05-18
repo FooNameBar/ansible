@@ -4,7 +4,6 @@
     name: [ "tldr", "ripgrep" ]
   tags:
     - install
-    - productivity
 
 - name: Clone fzf
   ansible.builtin.git:
@@ -12,10 +11,8 @@
    dest: '~/.fzf'
   tags:
     - install
-    - productivity
 
 - name: Run fzf install
   shell: ~/.fzf/install
   tags:
     - install
-    - productivity
