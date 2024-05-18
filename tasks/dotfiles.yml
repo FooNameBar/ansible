@@ -18,7 +18,7 @@
     - install
 
 - name: Stow dotfiles
-  shell: cd $HOME/.dotfiles && ./setupVars
+  shell: "{{ lookup('env', 'HOME') }}/.dotfiles/setupVars && source {{ lookup('env', 'HOME') }}/.zshrc"
   tags:
     - install
 
