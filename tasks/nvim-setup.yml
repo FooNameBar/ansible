@@ -15,6 +15,7 @@
     - install
     - nvim
 - name: Build neovim
+  become: true
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20"
   tags:
     - install
