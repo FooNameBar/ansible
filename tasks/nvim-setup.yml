@@ -5,7 +5,7 @@
     state: absent
   tags:
     - install
-    - neovim
+    - nvim
 - name: Clone Neovim
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
@@ -13,27 +13,27 @@
     version: "nightly"
   tags:
     - install
-    - neovim
+    - nvim
 - name: Build neovim
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20"
   tags:
     - install
-    - neovim
+    - nvim
 - name: Install neovim
   become: true
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && make install"
   tags:
     - install
-    - neovim
+    - nvim
 - name: Neovim Plugin Development 1
   become: true
   apt: name=luarocks
   tags:
     - install
-    - neovim
+    - nvim
 - name: Neovim Plugin Development 2 luacheck
   become: true
   shell: luarocks install luacheck
   tags:
     - install
-    - neovim
+    - nvim
