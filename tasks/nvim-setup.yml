@@ -16,7 +16,7 @@
     - nvim
 - name: Build neovim
   become: true
-  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20"
+  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20 CMAKE_BUILD_TYPE=Release"
   tags:
     - install
     - nvim

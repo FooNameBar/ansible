@@ -26,3 +26,4 @@
     - import_tasks: tasks/non-essentials.yml
     - import_tasks: tasks/alacritty.yml
 
+# ssh,productivity,nvim,brave,stow, nonessentials
