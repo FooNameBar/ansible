@@ -6,6 +6,15 @@
     - install
     - productivity
 
+- name: Tmux Resurrect Plugin
+  ansible.builtin.git:
+    repo: 'https://github.com/tmux-plugins/tmux-resurrect'
+    dest: '~/.tmux-resurrect'
+  tags:
+    - install
+    - productivity
+    - tmux-plugins
+
 - name: Clone fzf
   ansible.builtin.git:
    repo: 'https://github.com/junegunn/fzf.git'
