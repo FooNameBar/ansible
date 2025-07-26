@@ -1,7 +1,13 @@
 - name: Install packages
   become: true
   apt:
-    name: [ "tmux", "xclip", "tldr", "ripgrep" ]
+    name: [ "tmux", "xclip", "tldr", "ripgrep", "bat" ]
+  tags:
+    - install
+    - productivity
+
+- name: Make themes available for bat
+  shell: bat cache --build
   tags:
     - install
     - productivity
