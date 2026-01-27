@@ -20,6 +20,8 @@
 - name: Install rust/cargo
   when: cargo_exists == false
   shell: /tmp/sh.rustup.rs -y
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
   tags:
     - productivity
     - alacritty

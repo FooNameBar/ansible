@@ -1,17 +1,26 @@
-- name: Add Docker GPG apt key
+- name: Add Docker official GPG key
   become: true
-  apt_key:
+  get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+    force: true
   tags:
     - install
     - docker
 
-- name: Add Docker Repository
+- name: Add Docker Repository (deb822 style)
   become: true
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu focal stable
-    state: present
+  copy:
+    content: |
+      Types: deb
+      URIs: https://download.docker.com/linux/ubuntu
+      Suites: noble
+      Components: stable
+      Signed-By: /etc/apt/keyrings/docker.asc
+      Architectures: amd64
+    dest: /etc/apt/sources.list.d/docker.sources
+    mode: '0644'
   tags:
     - install
     - docker
