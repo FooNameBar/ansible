@@ -1,16 +1,16 @@
 - name: Install packages
   become: true
   apt:
-    name: [ "tmux", "xclip", "tldr", "ripgrep", "bat" ]
+    name: [ "tmux", "tree", "xclip", "tldr", "ripgrep", "bat" ]
   tags:
     - install
     - productivity
 
-- name: Make themes available for bat
-  shell: bat cache --build
-  tags:
-    - install
-    - productivity
+#- name: Make themes available for bat
+#  shell: bat cache --build
+#  tags:
+#    - install
+#    - productivity
 
 - name: Tmux Resurrect Plugin
   ansible.builtin.git:
@@ -34,3 +34,30 @@
   tags:
     - install
     - productivity
+
+- name: Check for cargo
+  shell: command -v cargo
+  register: cargo_exists
+  ignore_errors: yes
+  tags:
+    - productivity
+    - rust
+
+- name: Download Rust install script
+  when: cargo_exists != 0
+  get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/sh.rustup.rs
+    mode: '0755'
+    force: 'yes'
+  tags:
+    - productivity
+    - rust
+
+- name: Install rust/cargo
+  when: cargo_exists =! 0
+  shell: /tmp/sh.rustup.rs -y
+  tags:
+    - productivity
+    - rust
+

@@ -1,0 +1,53 @@
+- name: Install build dependencies for tree-sitter-cli (clang + libclang)
+  become: true
+  apt:
+    name:
+      - clang
+      - libclang-dev
+      - build-essential
+    state: present
+    update_cache: yes
+  tags:
+    - install
+    - productivity
+    - treesitter
+
+- name: Ensure cargo is available
+  command: "{{ ansible_env.HOME }}/.cargo/bin/cargo --version"
+  register: cargo_check
+  changed_when: false
+  failed_when: cargo_check.rc != 0
+  tags:
+    - install
+    - productivity
+    - treesitter
+
+- name: Install tree-sitter-cli via cargo
+  community.general.cargo:
+    name: tree-sitter-cli
+    locked: true
+    executable: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
+  register: cargo_result
+  changed_when: cargo_result.changed or "'Installing' in cargo_result.stdout or 'Updating' in cargo_result.stdout"
+  tags:
+    - install
+    - productivity
+    - treesitter
+
+- name: Verify tree-sitter CLI is installed
+  command: tree-sitter --version
+  register: ts_version
+  changed_when: false
+  failed_when: ts_version.rc != 0
+  tags:
+    - install
+    - productivity
+    - treesitter
+
+- name: Display installed tree-sitter version
+  debug:
+    msg: "tree-sitter CLI installed: {{ ts_version.stdout | default('not found') }}"
+  tags:
+    - install
+    - productivity
+    - treesitter

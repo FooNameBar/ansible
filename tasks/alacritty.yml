@@ -1,36 +1,3 @@
-- name: Check for cargo
-  shell: command -v cargo
-  register: cargo_exists
-  ignore_errors: yes
-  tags:
-    - productivity
-    - alacritty
-
-- name: Download Rust install script
-  when: cargo_exists == false
-  get_url:
-    url: https://sh.rustup.rs
-    dest: /tmp/sh.rustup.rs
-    mode: '0755'
-    force: 'yes'
-  tags:
-    - productivity
-    - alacritty
-
-- name: Install rust/cargo
-  when: cargo_exists == false
-  shell: /tmp/sh.rustup.rs -y
-  tags:
-    - productivity
-    - alacritty
-
-- name: Source rustc/cargo/zsh
-  when: cargo_exists == false
-  shell: source $HOME/.cargo/bin && source ~/.zshrc
-  tags:
-    - productivity
-    - alacritty
-
 - name: Install dependencies
   become: true
   apt:
@@ -92,6 +59,20 @@
 
 - name: Add shell completions
   shell: mkdir -p {{ lookup('env', 'HOME') }}/.zsh_functions/ && cp {{ lookup('env', 'HOME') }}/alacritty/extra/completions/_alacritty {{ lookup('env', 'HOME') }}/.zsh_functions/_alacritty
+  tags:
+    - productivity
+    - alacritty
+
+- name: Add Alacritty to terminal alternatives
+  become: true
+  command: update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
+  tags:
+    - productivity
+    - alacritty
+
+- name: Set Alacritty as default terminal
+  become: true
+  command: update-alternatives --set x-terminal-emulator /usr/local/bin/alacritty
   tags:
     - productivity
     - alacritty
