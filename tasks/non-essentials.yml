@@ -41,7 +41,7 @@
     - nonessentials
     - tailwind
 
-- name: Install TeX Live and LaTeX packages
+- name: Install TeX Live, LaTeX packages, and VimTex Tools (latexmk + biber)
   become: true
   apt:
     name:
@@ -49,8 +49,121 @@
       - texlive-latex-extra
       - texlive-fonts-recommended
       - texlive-science
+      - latexmk
+      - biber
     state: present
     update_cache: yes
   tags:
     - nonessentials
     - latex
+
+- name: Install Sioyek build dependencies
+  become: true
+  apt:
+    name:
+      - qtbase5-dev
+      - qt3d5-dev
+      - libharfbuzz-dev
+      - libmupdf-dev
+      - libmujs-dev
+      - libfreetype6-dev
+      - libopenjp2-7-dev
+      - libgumbo-dev
+      - libdjvulibre-dev
+      - libsixel-dev
+      - libjpeg-dev
+      - libpng-dev
+      - zlib1g-dev
+      - libssl-dev
+      - libglm-dev
+      - libglfw3-dev
+      - libxi-dev
+      - libx11-dev
+      - libxext-dev
+      - libxrender-dev
+    state: present
+    update_cache: yes
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
+
+- name: Check if Sioyek is already installed
+  command: command -v sioyek
+  register: sioyek_check
+  changed_when: false
+  failed_when: false
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
+
+- name: Clear Sioyek source directory to start fresh
+  file:
+    path: "{{ ansible_env.HOME }}/sioyek"
+    state: absent
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
+
+- name: Clone Sioyek repository
+  ansible.builtin.git:
+    repo: https://github.com/ahrm/sioyek.git
+    dest: "{{ ansible_env.HOME }}/sioyek"
+    depth: 1
+    single_branch: yes
+    version: main
+    recursive: yes
+    update: yes
+    accept_hostkey: yes
+  when: sioyek_check.rc != 0
+  register: clone_result
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
+
+- name: Fail if clone did not succeed
+  fail:
+    msg: "Failed to clone Sioyek repository"
+  when: clone_result.failed or clone_result.changed == false and sioyek_check.rc != 0
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
+
+- name: Build Sioyek using official build_linux.sh
+  shell: |
+    cd "{{ ansible_env.HOME }}/sioyek"
+    ./build_linux.sh
+  args:
+    creates: "{{ ansible_env.HOME }}/sioyek/build/sioyek"
+  when: sioyek_check.rc != 0
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
+
+- name: Install Sioyek binary system-wide
+  become: true
+  copy:
+    src: "{{ ansible_env.HOME }}/sioyek/build/sioyek"
+    dest: /usr/local/bin/sioyek
+    mode: '0755'
+    remote_src: yes
+  when: sioyek_check.rc != 0
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
+
+- name: Clean up Sioyek source directory (optional)
+  file:
+    path: "{{ ansible_env.HOME }}/sioyek"
+    state: absent
+  when: sioyek_check.rc != 0
+  tags:
+    - nonessentials
+    - latex
+    - sioyek
