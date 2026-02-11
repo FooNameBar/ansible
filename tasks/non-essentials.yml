@@ -169,7 +169,7 @@
     - latex
     - sioyek
 
-    - name: Copy Sioyek default prefs.config
+- name: Copy Sioyek default prefs.config
   become: true
   copy:
     src: "{{ ansible_env.HOME }}/sioyek/build/prefs.config"
