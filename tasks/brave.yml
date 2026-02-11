@@ -1,10 +1,59 @@
-- name: required libraries for brave
+- name: Remove Brave browser package
   become: true
   apt:
-    name: ["curl", "apt-transport-https"]
+    name: brave-browser
+    state: absent
+    purge: yes
   tags:
     - brave
     - install
+
+- name: Remove Brave repository file
+  become: true
+  file:
+    path: /etc/apt/sources.list.d/brave-browser-release.list
+    state: absent
+  tags:
+    - brave
+    - install
+
+- name: Remove Brave keyring (old location)
+  become: true
+  file:
+    path: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+    state: absent
+  ignore_errors: true
+  tags:
+    - brave
+    - install
+
+- name: Remove Brave keyring (new location if exists)
+  become: true
+  file:
+    path: /etc/apt/keyrings/brave-browser-archive-keyring.gpg
+    state: absent
+  ignore_errors: true
+  tags:
+    - brave
+    - install
+
+- name: Autoremove unused packages
+  become: true
+  apt:
+    autoremove: yes
+    purge: yes
+  tags:
+    - brave
+    - install
+
+- name: required libraries for brave
+  become: true
+  apt:
+    name: "apt-transport-https"
+  tags:
+    - brave
+    - install
+
 - name: Brave Browser archive-keyring.gpg download
   become: true
   get_url:
@@ -13,12 +62,14 @@
   tags:
     - brave
     - install
+
 - name: Brave Browser PPA setting
   become: true
   shell: echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | tee /etc/apt/sources.list.d/brave-browser-release.list
   tags:
     - brave
     - install
+
 - name: Brave Browser apt installation
   become: true
   apt:

@@ -15,24 +15,28 @@
   tags:
     - install
     - nvim
+
 - name: Build neovim
   become: true
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20 CMAKE_BUILD_TYPE=Release"
   tags:
     - install
     - nvim
+
 - name: Install neovim
   become: true
   shell: "cd {{ lookup('env', 'HOME') }}/neovim && make install"
   tags:
     - install
     - nvim
+
 - name: Neovim Plugin Development 1
   become: true
   apt: name=luarocks
   tags:
     - install
     - nvim
+
 - name: Neovim Plugin Development 2 luacheck
   become: true
   shell: luarocks install luacheck
