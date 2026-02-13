@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: Check for cargo
   shell: command -v cargo
   register: cargo_exists
@@ -33,6 +34,8 @@
     - productivity
     - alacritty
 
+=======
+>>>>>>> master
 - name: Install dependencies
   become: true
   apt:
@@ -94,6 +97,20 @@
 
 - name: Add shell completions
   shell: mkdir -p {{ lookup('env', 'HOME') }}/.zsh_functions/ && cp {{ lookup('env', 'HOME') }}/alacritty/extra/completions/_alacritty {{ lookup('env', 'HOME') }}/.zsh_functions/_alacritty
+  tags:
+    - productivity
+    - alacritty
+
+- name: Add Alacritty to terminal alternatives
+  become: true
+  command: update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
+  tags:
+    - productivity
+    - alacritty
+
+- name: Set Alacritty as default terminal
+  become: true
+  command: update-alternatives --set x-terminal-emulator /usr/local/bin/alacritty
   tags:
     - productivity
     - alacritty

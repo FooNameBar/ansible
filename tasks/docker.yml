@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 - name: Add Docker official GPG key
   become: true
   get_url:
@@ -5,10 +6,19 @@
     dest: /etc/apt/keyrings/docker.asc
     mode: '0644'
     force: true
+=======
+- name: Stop Docker
+  become: true
+  service:
+    name: docker
+    state: stopped
+  ignore_errors: true
+>>>>>>> master
   tags:
     - install
     - docker
 
+<<<<<<< HEAD
 - name: Add Docker Repository (deb822 style)
   become: true
   copy:
@@ -26,11 +36,130 @@
     - docker
 
 - name: Update apt and install docker-ce
+=======
+- name: Remove Docker packages
+>>>>>>> master
   become: true
   apt:
-    name: docker-ce
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      - docker-ce-rootless-extras
+    state: absent
+    purge: yes
+  tags:
+    - install
+    - docker
+
+- name: Remove Docker data directories
+  become: true
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/lib/docker
+    - /var/lib/containerd
+  tags:
+    - install
+    - docker
+
+- name: Remove Docker repository
+  become: true
+  file:
+    path: /etc/apt/sources.list.d/docker.list
+    state: absent
+  tags:
+    - install
+    - docker
+
+- name: Remove old keyrings
+  become: true
+  file:
+    path: /etc/apt/keyrings/docker.asc
+    state: absent
+  ignore_errors: true
+  tags:
+    - install
+    - docker
+
+- name: Autoremove
+  become: true
+  apt:
+    autoremove: yes
+    purge: yes
+  tags:
+    - install
+    - docker
+
+- name: Install prerequisites
+  become: true
+  apt:
+    name:
+      - ca-certificates
+      - gnupg
+    state: present
+    update_cache: yes
+  tags:
+    - install
+    - docker
+
+- name: Create keyrings directory
+  become: true
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  tags:
+    - install
+    - docker
+
+- name: Add Docker GPG key
+  become: true
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+  tags:
+    - install
+    - docker
+
+- name: Add Docker repository (Noble)
+  become: true
+  apt_repository:
+    repo: >
+      deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc]
+      https://download.docker.com/linux/ubuntu
+      {{ ansible_distribution_release }} stable
+    filename: docker
+    state: present
+  tags:
+    - install
+    - docker
+
+- name: Install Docker Engine
+  become: true
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
     state: latest
-    update_cache: true
+    update_cache: yes
+  tags:
+    - install
+    - docker
+
+- name: Add user to docker group
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
   tags:
     - install
     - docker
