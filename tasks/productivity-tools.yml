@@ -19,7 +19,6 @@
   tags:
     - install
     - productivity
-    - tmux-plugins
 
 - name: Clone fzf
   ansible.builtin.git:
@@ -55,7 +54,7 @@
     - rust
 
 - name: Install rust/cargo
-  when: cargo_exists =! 0
+  when: cargo_exists != 0
   shell: /tmp/sh.rustup.rs -y
   tags:
     - productivity
