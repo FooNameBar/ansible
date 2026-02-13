@@ -7,20 +7,16 @@
     - install
     - nvim
 
-<<<<<<< HEAD
-- name: Download Neovim PPA signing key
-=======
 - name: Clone Neovim
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
     dest: "{{ lookup('env', 'HOME') }}/neovim"
-    version: "nightly"
+    version: "stable"
   tags:
     - install
     - nvim
 
 - name: Build neovim
->>>>>>> master
   become: true
   ansible.builtin.get_url:
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9DBB0BE9366964F134855E2255F96FCF8231B6DD
@@ -31,11 +27,7 @@
     - install
     - nvim
 
-<<<<<<< HEAD
-- name: Add Neovim stable PPA (deb822 format)
-=======
 - name: Install neovim
->>>>>>> master
   become: true
   ansible.builtin.copy:
     content: |
@@ -50,26 +42,6 @@
     - install
     - nvim
 
-<<<<<<< HEAD
-- name: Update apt cache after adding Neovim PPA
-  become: true
-  ansible.builtin.apt:
-    update_cache: true
-  tags:
-    - install
-    - nvim
-
-- name: Install neovim from PPA
-  become: true
-  ansible.builtin.apt:
-    name: neovim
-    state: latest
-  tags:
-    - install
-    - nvim
-
-=======
->>>>>>> master
 - name: Neovim Plugin Development 1
   become: true
   apt: name=luarocks

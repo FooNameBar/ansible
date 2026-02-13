@@ -6,19 +6,11 @@
     - install
     - productivity
 
-<<<<<<< HEAD
 # - name: Make themes available for bat
 #   shell: bat cache --build
 #   tags:
 #     - install
 #     - productivity
-=======
-#- name: Make themes available for bat
-#  shell: bat cache --build
-#  tags:
-#    - install
-#    - productivity
->>>>>>> master
 
 - name: Tmux Resurrect Plugin
   ansible.builtin.git:

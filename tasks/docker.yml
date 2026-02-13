@@ -1,24 +1,13 @@
-<<<<<<< HEAD
-- name: Add Docker official GPG key
-  become: true
-  get_url:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    dest: /etc/apt/keyrings/docker.asc
-    mode: '0644'
-    force: true
-=======
 - name: Stop Docker
   become: true
   service:
     name: docker
     state: stopped
   ignore_errors: true
->>>>>>> master
   tags:
     - install
     - docker
 
-<<<<<<< HEAD
 - name: Add Docker Repository (deb822 style)
   become: true
   copy:
@@ -36,9 +25,6 @@
     - docker
 
 - name: Update apt and install docker-ce
-=======
-- name: Remove Docker packages
->>>>>>> master
   become: true
   apt:
     name:
