@@ -6,7 +6,6 @@
     - install
     - core
     - nvim
-    - productivity
 
 - name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
   become: true
@@ -16,13 +15,11 @@
     - install
     - core
     - nvim
-    - productivity
 
 - name: Install System Packages 3 (the rest)
   become: true
   apt:
-    name: [ "curl", "lsof", "dconf-editor", "nvidia-settings", "pavucontrol", "moreutils", "python3", "git" ]
+    name: [ "curl", "lsof", "dconf-editor", "pavucontrol", "moreutils", "python3", "git" ]
   tags:
     - install
     - core
-    - productivity
