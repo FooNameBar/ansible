@@ -1,7 +1,7 @@
 - name: Install packages
   become: true
   apt:
-    name: [ "tmux", "tree", "xclip", "tldr", "ripgrep", "bat" ]
+    name: [ "tmux", "tree", "xclip", "tldr", "ripgrep", "batcat" ]
   tags:
     - install
     - productivity
@@ -22,7 +22,7 @@
 
 - name: Remove fzf
   file:
-   path: '{{ ansible_enb.HOME }}/.fzf/'
+   path: '{{ ansible_env.HOME }}/.fzf/'
    state: absent
   tags:
     - install
@@ -44,7 +44,7 @@
 
 - name: Remove default zsh integration files
   file:
-   path: '{{ ansible_enb.HOME }}/.fzf/shell/'
+   path: '{{ ansible_env.HOME }}/.fzf/shell/'
    state: absent
   tags:
     - install
