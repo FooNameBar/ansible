@@ -1,8 +1,60 @@
-- name: Install neovim
+- name: Remove neovim
   become: true
-  apt:
+  file:
+    path: "{{ lookup('env', 'HOME') }}/neovim"
+    state: absent
+  tags:
+    - install
+    - nvim
+
+- name: Clone Neovim
+  ansible.builtin.git:
+    repo: 'https://github.com/neovim/neovim.git'
+    dest: "{{ lookup('env', 'HOME') }}/neovim"
+    version: "nightly"
+  tags:
+    - install
+    - nvim
+
+- name: Build neovim
+  become: true
+  ansible.builtin.get_url:
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9DBB0BE9366964F134855E2255F96FCF8231B6DD
+    dest: /etc/apt/keyrings/neovim-ppa-stable.asc
+    mode: '0644'
+    force: true
+  tags:
+    - install
+    - nvim
+
+- name: Add Neovim stable PPA (deb822 format)
+  become: true
+  ansible.builtin.copy:
+    content: |
+      Types: deb
+      URIs: http://ppa.launchpad.net/neovim-ppa/stable/ubuntu
+      Suites: noble
+      Components: main
+      Signed-By: /etc/apt/keyrings/neovim-ppa-stable.asc
+    dest: /etc/apt/sources.list.d/neovim-ppa-stable.sources
+    mode: '0644'
+  tags:
+    - install
+    - nvim
+
+- name: Update apt cache after adding Neovim PPA
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+  tags:
+    - install
+    - nvim
+
+- name: Install neovim from PPA
+  become: true
+  ansible.builtin.apt:
     name: neovim
-    state: present
+    state: latest
   tags:
     - install
     - nvim
@@ -20,22 +72,3 @@
   tags:
     - install
     - nvim
-
-- name: Download Hack Nerd Font
-  get_url:
-    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Hack.zip
-    dest: /tmp/Hack.zip
-    mode: '0755'
-    force: 'yes'
-  tags:
-    - install
-    - nvim
-
-- name: Unzip and copy to Fonts folder
-  become: true
-  shell: unzip /tmp/Hack.zip && mkdir -p /usr/share/fonts/truetype/Hack && mv *.ttf /usr/share/fonts/truetype/Hack/
-  tags:
-    - install
-    - nvim
-
-
