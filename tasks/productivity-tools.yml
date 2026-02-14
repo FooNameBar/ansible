@@ -71,7 +71,7 @@
     - rust
 
 - name: Install rust/cargo
-  when: cargo_exists =! 0
+  when: cargo_exists != 0
   shell: /tmp/sh.rustup.rs -y
   tags:
     - productivity

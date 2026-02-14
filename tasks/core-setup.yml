@@ -6,7 +6,6 @@
     - install
     - core
     - nvim
-    - productivity
 
 - name: Install System Packages 2 (lua, unzip, libtool, libtool-bin, gettext)
   become: true
@@ -16,7 +15,6 @@
     - install
     - core
     - nvim
-    - productivity
 
 - name: Install System Packages 3 (the rest)
   become: true
@@ -25,4 +23,3 @@
   tags:
     - install
     - core
-    - productivity
