@@ -20,6 +20,14 @@
     - install
     - productivity
 
+- name: Remove fzf
+  file:
+   path: '{{ ansible_enb.HOME }}/.fzf/'
+   state: absent
+  tags:
+    - install
+    - productivity
+
 - name: Clone fzf
   ansible.builtin.git:
    repo: 'https://github.com/junegunn/fzf.git'
@@ -30,6 +38,14 @@
 
 - name: Run fzf install
   shell: ~/.fzf/install
+  tags:
+    - install
+    - productivity
+
+- name: Remove default zsh integration files
+  file:
+   path: '{{ ansible_enb.HOME }}/.fzf/shell/'
+   state: absent
   tags:
     - install
     - productivity
