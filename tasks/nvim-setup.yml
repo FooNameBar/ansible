@@ -43,3 +43,20 @@
   tags:
     - install
     - nvim
+
+- name: Download Hack Nerd Font
+  get_url:
+    url: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Hack.zip
+    dest: /tmp/Hack.zip
+    mode: '0755'
+    force: 'yes'
+  tags:
+    - install
+    - nvim
+
+- name: Unzip and copy to Fonts folder
+  become: true
+  shell: unzip /tmp/Hack.zip && mkdir -p /usr/share/fonts/truetype/Hack && mv *.ttf /usr/share/fonts/truetype/Hack/
+  tags:
+    - install
+    - nvim
