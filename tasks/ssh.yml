@@ -65,3 +65,17 @@
   ansible.builtin.debug:
     msg: "SSH service status: {{ ssh_status.stdout }}"
   tags: *tags_for_ssh_tasks
+
+- name: Install UFW
+  apt:
+    name: ufw
+    state: present
+    update_cache: true
+  tags: *tags_for_ssh_tasks
+
+- name: Allow SSH through UFW
+  community.general.ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+  tags: *tags_for_ssh_tasks
