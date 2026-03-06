@@ -9,7 +9,7 @@
 - name: KeePassXC
   become: true
   apt:
-    name: [ "wireguard", "keepassxc"]
+    name: [ "wireguard", "keepassxc" ]
   tags:
     - nonessentials
 

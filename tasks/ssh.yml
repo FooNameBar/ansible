@@ -2,53 +2,66 @@
   stat:
     path: "{{ dest_key | dirname }}"
   register: dir_data
-  tags:
-    - dotfiles
-    - install
-    - ssh
+  tags: &tags_for_ssh_tasks [ 'install', 'dotfiles', 'ssh' ]
+
 - name: Creating .ssh
   file:
     dest: "{{ dest_key | dirname }}"
     state: directory
     mode: '0700'
-  tags:
-    - dotfiles
-    - install
-    - ssh
+  tags: *tags_for_ssh_tasks
+
 - name: Install ssh key
   copy:
     src: "{{ source_key }}"
     dest: "{{ dest_key }}"
     mode: '0600'
-  tags:
-    - dotfiles
-    - install
-    - ssh
+  tags: *tags_for_ssh_tasks
+
 - name: Install ssh key public
   copy:
     src: "{{ source_key }}.pub"
     dest: "{{ dest_key }}.pub"
     mode: '0644'
-  tags:
-    - dotfiles
-    - install
-    - ssh
+  tags: *tags_for_ssh_tasks
+
 - name: Cat public keys into register
   command: cat "{{ item }}"
   register: keys
   with_fileglob:
     - "{{ lookup('env', 'HOME') }}/.ssh/*.pub"
-  tags:
-    - dotfiles
-    - install
-    - ssh
+  tags: *tags_for_ssh_tasks
+
 - name: Set authorized keys from files
   authorized_key:
     user: "{{ user }}"
     state: present
     key: "{{ item.stdout }}"
   with_items: "{{ keys.results }}"
-  tags:
-    - dotfiles
-    - install
-    - ssh
+  tags: *tags_for_ssh_tasks
+
+- name: Openssh
+  become: true
+  apt:
+    name: [ "openssh-server" ]
+  tags: *tags_for_ssh_tasks
+
+- name: Enable and start SSH service
+  become: true
+  ansible.builtin.service:
+    name: ssh
+    state: started
+    enabled: yes
+  tags: *tags_for_ssh_tasks
+
+- name: Verify SSH service is running
+  ansible.builtin.command: systemctl is-active ssh
+  register: ssh_status
+  changed_when: false
+  failed_when: ssh_status.stdout != "active"
+  tags: *tags_for_ssh_tasks
+
+- name: Print SSH status
+  ansible.builtin.debug:
+    msg: "SSH service status: {{ ssh_status.stdout }}"
+  tags: *tags_for_ssh_tasks
